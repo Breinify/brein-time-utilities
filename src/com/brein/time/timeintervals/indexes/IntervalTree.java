@@ -27,7 +27,7 @@ public class IntervalTree implements Collection<IInterval>, Externalizable {
     private static final Logger LOGGER = Logger.getLogger(IntervalTree.class);
 
     private transient IntervalTreeConfiguration configuration = null;
-    private IntervalTreeNode root = null;
+    protected IntervalTreeNode root = null;
 
     private long size = 0L;
 
