@@ -191,6 +191,25 @@ public class TimeUtils {
         return utc.withZoneSameInstant(toZone);
     }
 
+    public static ZonedDateTime fromZoneToUtc(final long ts, final ZoneId zone) {
+        return fromZoneToZone(ts, zone, UTC);
+    }
+
+    public static ZonedDateTime fromZoneToUtc(final ZonedDateTime ts,
+                                              final ZoneId zone) {
+        return fromZoneToZone(ts, zone, UTC);
+    }
+
+    public static ZonedDateTime fromZoneToZone(final long ts, final ZoneId zone, final ZoneId toZone) {
+        return fromZoneToZone(ZonedDateTime.ofInstant(Instant.ofEpochSecond(ts), zone), zone, toZone);
+    }
+
+    public static ZonedDateTime fromZoneToZone(final ZonedDateTime ts,
+                                               final ZoneId zone,
+                                               final ZoneId toZone) {
+        return ts.withZoneSameLocal(toZone);
+    }
+
     public static ZoneId zoneId(final String tzId) {
         return zoneId(tzId, true);
     }

@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -61,7 +62,6 @@ public class TestTimeUtils {
                 "yyyy-MM-dd HH:mm:ss", "America/Chicago"));
         Assert.assertEquals(1492348192L, TimeUtils.dateStringToUnixTimestamp("2017-04-16 08:09:52",
                 "yyyy-MM-dd HH:mm:ss", "America/Chicago"));
-
 
         Assert.assertEquals(1492348192L, TimeUtils.dateStringToUnixTimestamp("2017-4-16 8:09:52",
                 "yyyy-M-d H:m:s", "America/Chicago"));
@@ -186,5 +186,14 @@ public class TestTimeUtils {
         // 22:42:54
         val = TimeUtils.getSecondsAfterMidnight(1549338174L, ZoneId.of("America/New_York"));
         Assert.assertEquals(22 * 60 * 60 + 42 * 60 + 54, val);
+    }
+
+    @Test
+    public void testFromZoneToZone() {
+        ZonedDateTime result;
+
+
+        result = TimeUtils.fromZoneToZone(1577865600, ZoneId.of("America/Los_Angeles"), TimeUtils.UTC);
+        Assert.assertEquals(1577836800L, result.toInstant().getEpochSecond());
     }
 }
