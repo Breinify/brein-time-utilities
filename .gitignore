@@ -20,6 +20,10 @@ tmp/**/*
 ######################
 src/config/dev-*.properties
 
+# Password Files     #
+######################
+*/test/config/*-password.properties
+
 # OS generated files #
 ######################
 .DS_Store
