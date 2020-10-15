@@ -1,6 +1,7 @@
 package com.brein.time.utils;
 
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 
@@ -23,7 +24,14 @@ public enum TimeModifier {
      * @return the modified timestamp
      */
     public static long moveDays(final long timestamp, final boolean normalize, final long days) {
-        final ZonedDateTime dateTime = TimeUtils.toZone(timestamp, TimeUtils.UTC);
+        return moveDays(timestamp, TimeUtils.UTC, normalize, days);
+    }
+
+    public static long moveDays(final long timestamp,
+                                final ZoneId zoneId,
+                                final boolean normalize,
+                                final long days) {
+        final ZonedDateTime dateTime = TimeUtils.toZone(timestamp, zoneId);
         final ZonedDateTime normDateTime = normalize ? START_OF_DAY.applyModifier(dateTime) : dateTime;
 
         return normDateTime.plusDays(days).toEpochSecond();
@@ -40,7 +48,14 @@ public enum TimeModifier {
      * @return the modified timestamp
      */
     public static long moveMonths(final long timestamp, final boolean normalize, final long months) {
-        final ZonedDateTime dateTime = TimeUtils.toZone(timestamp, TimeUtils.UTC);
+        return moveMonths(timestamp, TimeUtils.UTC, normalize, months);
+    }
+
+    public static long moveMonths(final long timestamp,
+                                  final ZoneId zoneId,
+                                  final boolean normalize,
+                                  final long months) {
+        final ZonedDateTime dateTime = TimeUtils.toZone(timestamp, zoneId);
         final ZonedDateTime normDateTime = normalize ? START_OF_MONTH.applyModifier(dateTime) : dateTime;
 
         return normDateTime.plusMonths(months).toEpochSecond();
@@ -77,6 +92,11 @@ public enum TimeModifier {
      * @return the modified unix timestamp
      */
     public long applyModifier(final long timestamp) {
-        return this.applyModifier(TimeUtils.toZone(timestamp, TimeUtils.UTC)).toEpochSecond();
+        return applyModifier(timestamp, TimeUtils.UTC);
+    }
+
+    public long applyModifier(final long timestamp,
+                              final ZoneId zoneId) {
+        return applyModifier(TimeUtils.toZone(timestamp, zoneId)).toEpochSecond();
     }
 }
