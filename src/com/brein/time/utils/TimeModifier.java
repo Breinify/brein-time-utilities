@@ -28,6 +28,13 @@ public enum TimeModifier {
     }
 
     public static long moveDays(final long timestamp,
+                                final String zoneId,
+                                final boolean normalize,
+                                final long days) {
+        return moveDays(timestamp, TimeUtils.zoneId(zoneId), normalize, days);
+    }
+
+    public static long moveDays(final long timestamp,
                                 final ZoneId zoneId,
                                 final boolean normalize,
                                 final long days) {
@@ -49,6 +56,13 @@ public enum TimeModifier {
      */
     public static long moveMonths(final long timestamp, final boolean normalize, final long months) {
         return moveMonths(timestamp, TimeUtils.UTC, normalize, months);
+    }
+
+    public static long moveMonths(final long timestamp,
+                                  final String zoneId,
+                                  final boolean normalize,
+                                  final long days) {
+        return moveMonths(timestamp, TimeUtils.zoneId(zoneId), normalize, days);
     }
 
     public static long moveMonths(final long timestamp,
