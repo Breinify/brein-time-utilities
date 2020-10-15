@@ -192,8 +192,12 @@ public class TestTimeUtils {
     public void testFromZoneToZone() {
         ZonedDateTime result;
 
-
         result = TimeUtils.fromZoneToZone(1577865600, ZoneId.of("America/Los_Angeles"), TimeUtils.UTC);
         Assert.assertEquals(1577836800L, result.toInstant().getEpochSecond());
+    }
+
+    @Test
+    public void testConvertDateFormat() {
+        Assert.assertEquals("10/15/2020", TimeUtils.convertDateFormat("2020-10-15", "yyyy-MM-dd", "MM/dd/yyyy"));
     }
 }
