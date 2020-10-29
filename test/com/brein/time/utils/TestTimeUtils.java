@@ -34,6 +34,8 @@ public class TestTimeUtils {
     public void testFormat() {
         Assert.assertEquals("Tue Nov 29 2016 11:11:30 GMT-0800 (PST)",
                 TimeUtils.format("E MMM dd yyyy HH:mm:ss 'GMT'Z (z)", 1480446690L, "America/Los_Angeles"));
+        Assert.assertEquals("11/29/2016 11:11:30 AM",
+                TimeUtils.format("MM/dd/YYYY hh:mm:ss a", 1480446690L, "America/Los_Angeles"));
     }
 
     @Test
