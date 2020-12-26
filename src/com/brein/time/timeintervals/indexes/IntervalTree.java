@@ -118,7 +118,7 @@ public class IntervalTree implements Collection<IInterval>, Externalizable {
 
         rightNodeStream = this._overlap(node.getRight(), query);
 
-        return Stream.of(nodeStream, leftNodeStream, rightNodeStream).flatMap(s -> s);
+        return Stream.of(leftNodeStream, nodeStream, rightNodeStream).flatMap(s -> s);
     }
 
     public IntervalTree insert(final IInterval interval) {
