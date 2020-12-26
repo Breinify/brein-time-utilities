@@ -255,10 +255,10 @@ public class IntervalTreeNode extends IntervalTreeNodeContext
         }
     }
 
-    public void replaceChild(final IntervalTreeNode replacee, final IntervalTreeNode replacement) {
-        if (getLeft() == replacee) {
+    public void replaceChild(final IntervalTreeNode replace, final IntervalTreeNode replacement) {
+        if (getLeft() == replace) {
             setLeft(replacement);
-        } else if (getRight() == replacee) {
+        } else if (getRight() == replace) {
             setRight(replacement);
         }
     }
