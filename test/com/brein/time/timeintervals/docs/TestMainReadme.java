@@ -27,7 +27,7 @@ public class TestMainReadme {
 
         final Collection<IInterval> overlap = tree.overlap(new LongInterval(2L, 2L));
         // will print out [1, 5] and [2, 5]
-        Assert.assertEquals(Arrays.asList(new LongInterval(2L, 5L), new LongInterval(1L, 5L)), overlap);
+        Assert.assertEquals(Arrays.asList(new LongInterval(1L, 5L), new LongInterval(2L, 5L)), overlap);
 
         final Collection<IInterval> find = tree.find(new LongInterval(2L, 5L));
         // will print out only [2, 5]
