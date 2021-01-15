@@ -46,14 +46,6 @@ public class TimeUtils {
         return formatUnixTimeStamp("yyyy-MM-dd HH:mm:ss z", unixTimeStamp);
     }
 
-    public static String formatUnixTimeStamp(final long unixTimeStamp) {
-        return formatUnixTimeStamp("yyyy/MM/dd HH:mm:ss", unixTimeStamp);
-    }
-
-    public static String formatUnixTimeStamp(final String format, final long unixTimeStamp) {
-        return format(format, unixTimeStamp, UTC);
-    }
-
     public static String format(final String format, final long unixTimeStamp, final String zone) {
         return format(format, unixTimeStamp, zoneId(zone));
     }
@@ -63,6 +55,14 @@ public class TimeUtils {
         return Instant.ofEpochSecond(unixTimeStamp)
                 .atZone(zone)
                 .format(formatter);
+    }
+
+    public static String formatUnixTimeStamp(final long unixTimeStamp) {
+        return formatUnixTimeStamp("yyyy/MM/dd HH:mm:ss", unixTimeStamp);
+    }
+
+    public static String formatUnixTimeStamp(final String format, final long unixTimeStamp) {
+        return format(format, unixTimeStamp, UTC);
     }
 
     public static long now() {
