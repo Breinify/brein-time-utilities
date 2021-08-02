@@ -10,6 +10,7 @@ public enum TimeModifier {
     START_OF_HOUR,
     START_OF_DAY,
     END_OF_DAY,
+    START_OF_WEEK,
     START_OF_MONTH,
     NONE;
 
@@ -87,6 +88,8 @@ public enum TimeModifier {
                     .truncatedTo(ChronoUnit.DAYS)
                     .plusDays(1)
                     .minusSeconds(1);
+        } else if (START_OF_WEEK.equals(this)) {
+            return dateTime.truncatedTo(ChronoUnit.WEEKS);
         } else if (START_OF_MONTH.equals(this)) {
             return dateTime
                     .withDayOfMonth(1)
