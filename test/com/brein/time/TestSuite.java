@@ -8,6 +8,7 @@ import com.brein.time.timeseries.TestBucketTimeSeries;
 import com.brein.time.timeseries.TestContainerBucketTimeSeries;
 import com.brein.time.timeseries.gson.TestBucketTimeSeriesTypeConverter;
 import com.brein.time.timeseries.gson.TestContainerBucketTimeSeriesTypeConverter;
+import com.brein.time.utils.TestTimeModifier;
 import com.brein.time.utils.TestTimeTruncater;
 import com.brein.time.utils.TestTimeUtils;
 import org.junit.runner.RunWith;
@@ -25,7 +26,9 @@ import org.junit.runners.Suite;
         TestInterval.class,
         TestIntervalTree.class,
 
-        TestDocsSuite.class
+        TestDocsSuite.class,
+
+        TestTimeModifier.class
 })
 public class TestSuite {
 }

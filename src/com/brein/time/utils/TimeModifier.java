@@ -10,6 +10,7 @@ public enum TimeModifier {
     START_OF_HOUR,
     START_OF_DAY,
     END_OF_DAY,
+    // Weeks start on Sunday
     START_OF_WEEK,
     START_OF_MONTH,
     NONE;
@@ -89,7 +90,7 @@ public enum TimeModifier {
                     .plusDays(1)
                     .minusSeconds(1);
         } else if (START_OF_WEEK.equals(this)) {
-            return dateTime.truncatedTo(ChronoUnit.WEEKS);
+            return dateTime.minusDays(dateTime.getDayOfWeek().getValue() % 7).truncatedTo(ChronoUnit.DAYS);
         } else if (START_OF_MONTH.equals(this)) {
             return dateTime
                     .withDayOfMonth(1)
