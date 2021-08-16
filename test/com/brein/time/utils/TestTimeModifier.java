@@ -21,6 +21,6 @@ public class TestTimeModifier {
         Assert.assertEquals(1629244800, TimeModifier.START_OF_DAY.moveTimeByUnit(1629108000, true, 2));
 
         Assert.assertEquals(1627776000, TimeModifier.START_OF_MONTH.moveTimeByUnit(1629108000, true, 0));
-        Assert.assertEquals(1629244800, TimeModifier.START_OF_MONTH.moveTimeByUnit(1629108000, true, 1));
+        Assert.assertEquals(1630454400, TimeModifier.START_OF_MONTH.moveTimeByUnit(1629108000, true, 1));
     }
 }
