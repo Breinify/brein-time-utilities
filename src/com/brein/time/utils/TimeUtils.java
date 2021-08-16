@@ -1,5 +1,6 @@
 package com.brein.time.utils;
 
+import com.sun.istack.internal.NotNull;
 import org.apache.log4j.Logger;
 
 import java.text.ParseException;
@@ -394,17 +395,24 @@ public class TimeUtils {
      */
     public static List<Long> createTimestampList(final long startUnixTimestamp,
                                                  final long endUnixTimestamp) {
+        return createTimestampList(TimeModifier.START_OF_DAY, startUnixTimestamp, endUnixTimestamp);
+    }
+
+    public static List<Long> createTimestampList(@NotNull final TimeModifier timeModifier,
+                                                 final long startUnixTimestamp,
+                                                 final long endUnixTimestamp) {
         if (startUnixTimestamp > endUnixTimestamp) {
             return Collections.emptyList();
         }
 
         // normalize the start and end (next day's start)
-        final long normStart = TimeModifier.START_OF_DAY.applyModifier(startUnixTimestamp);
-        final long normEnd = TimeModifier.moveDays(endUnixTimestamp, true, 1);
+        final long normStart = timeModifier.applyModifier(startUnixTimestamp);
+        final long normEnd = timeModifier.moveTimeByUnit(endUnixTimestamp, true, 1);
 
         // determine which times we have to query for
         final List<Long> times = new ArrayList<>();
-        for (long time = normStart; time < normEnd; time += 24 * 60 * 60) {
+//        long curr = normStart;
+        for (long time = normStart; time < normEnd; time = timeModifier.moveTimeByUnit(time, true, 1)) {
             times.add(time);
         }
 

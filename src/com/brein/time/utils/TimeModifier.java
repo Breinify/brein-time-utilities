@@ -77,6 +77,29 @@ public enum TimeModifier {
         return normDateTime.plusMonths(months).toEpochSecond();
     }
 
+    /**
+     * @param timestamp the timestamp to start from
+     * @param zoneId    zone ID
+     * @param normalize {@code true} to normalize the date to the start of the month, otherwise {@code false}
+     * @param numUnits  the number of units of the {@code TimeModifier} type to move
+     *
+     * @return Timestamp moved by the number of units given by {@code numUnits}
+     */
+    public long moveTimeByUnit(final long timestamp,
+                               final ZoneId zoneId,
+                               final boolean normalize,
+                               final long numUnits) {
+        final ZonedDateTime dateTime = TimeUtils.toZone(timestamp, zoneId);
+        final ZonedDateTime normDateTime = normalize ? applyModifier(dateTime) : dateTime;
+        return moveByUnit(normDateTime, numUnits).toEpochSecond();
+    }
+
+    public long moveTimeByUnit(final long timestamp,
+                               final boolean normalize,
+                               final long numUnits) {
+        return moveTimeByUnit(timestamp, TimeUtils.UTC, normalize, numUnits);
+    }
+
     public ZonedDateTime applyModifier(final ZonedDateTime dateTime) {
         if (START_OF_MINUTE.equals(this)) {
             return dateTime.truncatedTo(ChronoUnit.MINUTES);
@@ -95,6 +118,26 @@ public enum TimeModifier {
             return dateTime
                     .withDayOfMonth(1)
                     .with(LocalTime.of(0, 0));
+        } else if (NONE.equals(this)) {
+            return dateTime;
+        } else {
+            throw new IllegalArgumentException("Unexpected TimeModifier: " + this);
+        }
+    }
+
+    public ZonedDateTime moveByUnit(final ZonedDateTime dateTime, final long numUnits) {
+        if (START_OF_MINUTE.equals(this)) {
+            return dateTime.plusMinutes(numUnits);
+        } else if (START_OF_HOUR.equals(this)) {
+            return dateTime.plusHours(numUnits);
+        } else if (START_OF_DAY.equals(this)) {
+            return dateTime.plusDays(numUnits);
+        } else if (END_OF_DAY.equals(this)) {
+            return dateTime.plusDays(numUnits);
+        } else if (START_OF_WEEK.equals(this)) {
+            return dateTime.plusWeeks(numUnits);
+        } else if (START_OF_MONTH.equals(this)) {
+            return dateTime.plusMonths(numUnits);
         } else if (NONE.equals(this)) {
             return dateTime;
         } else {

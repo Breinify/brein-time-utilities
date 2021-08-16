@@ -164,7 +164,7 @@ public class TestTimeUtils {
     }
 
     @Test
-    public void testCreateTimestampList() {
+    public void testCreateTimestampListDays() {
         Assert.assertEquals(Collections.emptyList(), TimeUtils.createTimestampList(1L, 0L));
 
         Assert.assertEquals(Collections.singletonList(1497225600L),
@@ -175,6 +175,23 @@ public class TestTimeUtils {
 
         Assert.assertEquals(Arrays.asList(1497052800L, 1497139200L, 1497225600L, 1497312000L),
                 TimeUtils.createTimestampList(1497126525L, 1497326525L));
+    }
+
+    @Test
+    public void testCreateTimestampListMonths() {
+        // mid january to mid march
+        Assert.assertEquals(Arrays.asList(1609459200L, 1612137600L, 1614556800L),
+                TimeUtils.createTimestampList(TimeModifier.START_OF_MONTH, 1610697600L, 1615791600L));
+
+        // first second of january to first second of march
+        Assert.assertEquals(Arrays.asList(1609459200L, 1612137600L, 1614556800L),
+                TimeUtils.createTimestampList(TimeModifier.START_OF_MONTH, 1609459200L, 1614556800L));
+
+        Assert.assertEquals(Arrays.asList(1609459200L, 1612137600L),
+                TimeUtils.createTimestampList(TimeModifier.START_OF_MONTH, 1610697600L, 1612137600L));
+
+        Assert.assertEquals(Collections.singletonList(1614556800L),
+                TimeUtils.createTimestampList(TimeModifier.START_OF_MONTH, 1615791600L, 1616137200L));
     }
 
     @Test
