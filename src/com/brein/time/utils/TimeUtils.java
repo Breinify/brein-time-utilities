@@ -1,6 +1,5 @@
 package com.brein.time.utils;
 
-import com.sun.istack.internal.NotNull;
 import org.apache.log4j.Logger;
 
 import java.text.ParseException;
@@ -398,10 +397,10 @@ public class TimeUtils {
         return createTimestampList(TimeModifier.START_OF_DAY, startUnixTimestamp, endUnixTimestamp);
     }
 
-    public static List<Long> createTimestampList(@NotNull final TimeModifier timeModifier,
+    public static List<Long> createTimestampList(final TimeModifier timeModifier,
                                                  final long startUnixTimestamp,
                                                  final long endUnixTimestamp) {
-        if (startUnixTimestamp > endUnixTimestamp) {
+        if (timeModifier == null || startUnixTimestamp > endUnixTimestamp) {
             return Collections.emptyList();
         }
 
@@ -411,7 +410,6 @@ public class TimeUtils {
 
         // determine which times we have to query for
         final List<Long> times = new ArrayList<>();
-//        long curr = normStart;
         for (long time = normStart; time < normEnd; time = timeModifier.moveTimeByUnit(time, true, 1)) {
             times.add(time);
         }
