@@ -4,6 +4,7 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAdjusters;
 
 public enum TimeModifier {
     START_OF_MINUTE,
@@ -13,6 +14,7 @@ public enum TimeModifier {
     // Weeks start on Sunday
     START_OF_WEEK,
     START_OF_MONTH,
+    END_OF_MONTH,
     NONE;
 
     /**
@@ -118,6 +120,10 @@ public enum TimeModifier {
             return dateTime
                     .withDayOfMonth(1)
                     .with(LocalTime.of(0, 0));
+        } else if (END_OF_MONTH.equals(this)) {
+            return dateTime
+                    .with(TemporalAdjusters.lastDayOfMonth())
+                    .with(LocalTime.of(23, 59, 59));
         } else if (NONE.equals(this)) {
             return dateTime;
         } else {
