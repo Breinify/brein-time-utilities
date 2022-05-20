@@ -8,7 +8,7 @@
     <version>1.8.0</version>
 
     <name>brein-time-utilities</name>
-    <description>Brein Time Utilities (Breinify)</description>
+    <description>Common Library for time dependent things, contains time-series operations, time interval-tree, Allen's temporal operators.</description>
     <packaging>jar</packaging>
 
     <licenses>

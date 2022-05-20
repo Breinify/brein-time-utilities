@@ -7,7 +7,7 @@
     <artifactId>brein-time-utilities</artifactId>
     <version>TRUNK-SNAPSHOT</version>
     <name>brein-time-utilities</name>
-    <description>Common Library for time dependent things, especially time-series.</description>
+    <description>Common Library for time dependent things, contains time-series operations, time interval-tree, Allen's temporal operators.</description>
     <packaging>jar</packaging>
 
     <scm>
