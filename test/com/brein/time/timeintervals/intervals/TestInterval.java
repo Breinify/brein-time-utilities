@@ -6,12 +6,11 @@ import org.junit.Test;
 public class TestInterval {
 
     @Test
-    @SuppressWarnings({"EqualsWithItself", "EqualsBetweenInconvertibleTypes"})
     public void testEqualAndCompare() {
         final IInterval<Long> interval = new LongInterval(1L, 5L);
 
-        //noinspection EqualsWithItself
         Assert.assertEquals(interval, interval);
+        //noinspection EqualsWithItself
         Assert.assertEquals(0, interval.compareTo(interval));
 
         final NumberInterval<Long> interval1 = new LongInterval(null, null);
@@ -51,9 +50,10 @@ public class TestInterval {
         Assert.assertEquals(1, new LongInterval(1L, 5L, true, true).compareTo(interval7));
 
         final IdInterval<String, Long> interval8 = new IdInterval<>("ID1", new LongInterval(1L, 5L));
-        Assert.assertTrue(interval8.equals(interval8));
-        Assert.assertTrue(interval8.equals(new IdInterval<>("ID1", new LongInterval(1L, 5L))));
-        Assert.assertFalse(interval8.equals(new LongInterval(1L, 5L)));
+        Assert.assertEquals(interval8, interval8);
+        Assert.assertEquals(interval8, new IdInterval<>("ID1", new LongInterval(1L, 5L)));
+        //noinspection AssertBetweenInconvertibleTypes
+        Assert.assertNotEquals(interval8, new LongInterval(1L, 5L));
 
         Assert.assertEquals(-1, interval8.compareTo(new IdInterval<>("ID2", new LongInterval(1L, 5L))));
         Assert.assertEquals(1, new IdInterval<>("ID2", new LongInterval(1L, 5L)).compareTo(interval8));
