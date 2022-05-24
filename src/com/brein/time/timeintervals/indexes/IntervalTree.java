@@ -22,7 +22,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@SuppressWarnings("NullableProblems")
 public class IntervalTree implements Collection<IInterval>, Externalizable {
     private static final Logger LOGGER = Logger.getLogger(IntervalTree.class);
 
@@ -52,7 +51,7 @@ public class IntervalTree implements Collection<IInterval>, Externalizable {
      * @see #balance()
      */
     protected IntervalTreeNode getRoot() {
-        return root;
+        return this.root;
     }
 
     protected Collection<IInterval> _find(final IntervalTreeNode node,
@@ -210,12 +209,12 @@ public class IntervalTree implements Collection<IInterval>, Externalizable {
             return leftRotate(node);
         }
         // Left Right Case
-        else if (balance > 1 && balanceLeft < 0) {
+        else if (balance > 1) { // && balanceLeft < 0
             node.setLeft(leftRotate(node.getLeft()));
             return rightRotate(node);
         }
         // Right Left Case
-        else if (balance < -1 && balanceRight > 0) {
+        else if (balance < -1) { // && balanceRight > 0
             node.setRight(rightRotate(node.getRight()));
             return leftRotate(node);
         }
@@ -272,8 +271,8 @@ public class IntervalTree implements Collection<IInterval>, Externalizable {
      * must be rebalanced (if activated, see {@link #isAutoBalancing()}). The method returns the re-organized, balanced
      * sub-tree. The returned sub-tree can be at most better (in height) by one - if the tree was balanced before.
      * <p>
-     * - http://www.mathcs.emory.edu/~cheung/Courses/323/Syllabus/Trees/AVL-delete.html<br/>
-     * - http://quiz.geeksforgeeks.org/binary-search-tree-set-2-delete/
+     * - <a href="http://www.mathcs.emory.edu/~cheung/Courses/323/Syllabus/Trees/AVL-delete.html">AVL delete</a><br/>
+     * - <a href="http://quiz.geeksforgeeks.org/binary-search-tree-set-2-delete/">binary search tree deletion</a>
      *
      * @param node the node which contained the removed interval
      *
@@ -287,7 +286,7 @@ public class IntervalTree implements Collection<IInterval>, Externalizable {
         /*
          * There is a different between the new root (rootNode) of the sub-tree and the position where the
          * action really took place (i.e., the parent of the node, which was modified). To understand the difference,
-          * it is best to look at:
+         * it is best to look at:
          *
          * - http://www.mathcs.emory.edu/~cheung/Courses/323/Syllabus/Trees/AVL-delete.html
          */
@@ -458,7 +457,7 @@ public class IntervalTree implements Collection<IInterval>, Externalizable {
 
     @Override
     public int size() {
-        return size < Integer.MAX_VALUE ? Long.valueOf(size).intValue() : Integer.MAX_VALUE;
+        return this.size < Integer.MAX_VALUE ? Long.valueOf(this.size).intValue() : Integer.MAX_VALUE;
     }
 
     @Override
@@ -490,7 +489,7 @@ public class IntervalTree implements Collection<IInterval>, Externalizable {
                 return this.next != null;
             }
 
-            protected IInterval findNext() {
+            private IInterval findNext() {
                 if (this.nodeCollectionIt != null && this.nodeCollectionIt.hasNext()) {
                     // nothing to do, next will return something
                 } else if (outerNodeIt.hasNext()) {
@@ -544,7 +543,7 @@ public class IntervalTree implements Collection<IInterval>, Externalizable {
         final AtomicInteger pos = new AtomicInteger(0);
         iterator().forEachRemaining(i -> intervals[pos.getAndIncrement()] = (T) i);
 
-        for (int i = intervals.length; i < size(); i++) {
+        for (int i = pos.get(); i < size(); i++) {
             intervals[i] = null;
         }
 
@@ -675,7 +674,7 @@ public class IntervalTree implements Collection<IInterval>, Externalizable {
 
             @Override
             public boolean hasNext() {
-                return next != null;
+                return this.next != null;
             }
 
             @Override
@@ -765,7 +764,7 @@ public class IntervalTree implements Collection<IInterval>, Externalizable {
     }
 
     public IntervalTreeConfiguration getConfiguration() {
-        return configuration;
+        return this.configuration;
     }
 
     public void setConfiguration(final IntervalTreeConfiguration configuration) {
