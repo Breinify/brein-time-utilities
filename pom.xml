@@ -45,7 +45,7 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- Cassanra is needed for: CassandraIntervalCollectionPersistor -->
+        <!-- Cassandra is needed for: CassandraIntervalCollectionPersistor -->
         <dependency>
             <groupId>com.datastax.cassandra</groupId>
             <artifactId>cassandra-driver-core</artifactId>
