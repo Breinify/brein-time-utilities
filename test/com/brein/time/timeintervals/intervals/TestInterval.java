@@ -11,7 +11,7 @@ public class TestInterval {
         final IInterval<Long> interval = new LongInterval(1L, 5L);
 
         //noinspection EqualsWithItself
-        Assert.assertTrue(interval.equals(interval));
+        Assert.assertEquals(interval, interval);
         Assert.assertEquals(0, interval.compareTo(interval));
 
         final NumberInterval<Long> interval1 = new LongInterval(null, null);
@@ -29,14 +29,14 @@ public class TestInterval {
         final NumberInterval<Long> interval4 = new LongInterval(1L, 5L);
         Assert.assertEquals(0, interval.compareTo(interval4));
         Assert.assertEquals(0, interval4.compareTo(interval));
-        Assert.assertTrue(interval.equals(interval4));
-        Assert.assertTrue(interval4.equals(interval));
+        Assert.assertEquals(interval, interval4);
+        Assert.assertEquals(interval4, interval);
 
         final NumberInterval<Long> interval5 = new NumberInterval<>(Long.class, 1L, 6L, false, true);
         Assert.assertEquals(0, interval.compareTo(interval5));
         Assert.assertEquals(0, interval5.compareTo(interval));
-        Assert.assertTrue(interval.equals(interval5));
-        Assert.assertTrue(interval5.equals(interval));
+        Assert.assertEquals(interval, interval5);
+        Assert.assertEquals(interval5, interval);
 
         final NumberInterval<Long> interval6 = new LongInterval(1L, 5L);
         Assert.assertEquals(0, interval6.compareTo(new LongInterval(1L, 5L)));
@@ -51,9 +51,9 @@ public class TestInterval {
         Assert.assertEquals(1, new LongInterval(1L, 5L, true, true).compareTo(interval7));
 
         final IdInterval<String, Long> interval8 = new IdInterval<>("ID1", new LongInterval(1L, 5L));
-        Assert.assertEquals(true, interval8.equals(interval8));
-        Assert.assertEquals(true, interval8.equals(new IdInterval<>("ID1", new LongInterval(1L, 5L))));
-        Assert.assertEquals(false, interval8.equals(new LongInterval(1L, 5L)));
+        Assert.assertTrue(interval8.equals(interval8));
+        Assert.assertTrue(interval8.equals(new IdInterval<>("ID1", new LongInterval(1L, 5L))));
+        Assert.assertFalse(interval8.equals(new LongInterval(1L, 5L)));
 
         Assert.assertEquals(-1, interval8.compareTo(new IdInterval<>("ID2", new LongInterval(1L, 5L))));
         Assert.assertEquals(1, new IdInterval<>("ID2", new LongInterval(1L, 5L)).compareTo(interval8));

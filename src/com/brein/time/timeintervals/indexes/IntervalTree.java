@@ -543,6 +543,7 @@ public class IntervalTree implements Collection<IInterval>, Externalizable {
         final AtomicInteger pos = new AtomicInteger(0);
         iterator().forEachRemaining(i -> intervals[pos.getAndIncrement()] = (T) i);
 
+        // we remove any previously set value in the array
         for (int i = pos.get(); i < size(); i++) {
             intervals[i] = null;
         }

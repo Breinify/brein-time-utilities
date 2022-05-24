@@ -245,9 +245,7 @@ public class TestIntervalTree {
         tree.insert(new LongInterval(3L, 3L));
         overlap = tree.overlap(new LongInterval(1L, 5L));
         Assert.assertEquals(1, overlap.size());
-        Assert.assertTrue(overlap.containsAll(Collections.singletonList(
-                new LongInterval(3L, 3L)
-        )));
+        Assert.assertTrue(overlap.contains(new LongInterval(3L, 3L)));
 
         overlap = tree.overlap(new LongInterval(4L, 5L));
         Assert.assertEquals(0, overlap.size());
@@ -291,6 +289,8 @@ public class TestIntervalTree {
     protected void assertIsEmpty(final IntervalTree tree) {
         Assert.assertEquals(0, tree.size());
         Assert.assertTrue(tree.isEmpty());
+
+        //noinspection RedundantOperationOnEmptyContainer
         Assert.assertFalse(tree.iterator().hasNext());
         Assert.assertFalse(tree.nodeIterator().hasNext());
         Assert.assertFalse(tree.positionIterator().hasNext());
@@ -369,7 +369,6 @@ public class TestIntervalTree {
         return tree;
     }
 
-    @SuppressWarnings("unchecked")
     public void assertNode(final IntervalTreeNode node, final IntervalTree tree, final boolean balancing) {
         if (node.isRoot()) {
             Assert.assertEquals(0, node.getLevel());
@@ -480,6 +479,38 @@ public class TestIntervalTree {
             Assert.assertNull(e.getMessage(), e);
         } finally {
             Assert.assertTrue(treeFile.delete());
+        }
+    }
+
+    @Test
+    public void testToArray() {
+        final IntervalTree tree = IntervalTreeBuilder.newBuilder()
+                .usePredefinedType(IntervalType.NUMBER, false)
+                .collectIntervals(interval -> new ListIntervalCollection())
+                .enableWriteCollections()
+                .build();
+
+        IInterval[] result;
+
+        // check the empty result
+        result = tree.toArray(new IInterval[0]);
+        Assert.assertEquals(0, result.length);
+
+        // check if fields are empty
+        result = tree.toArray(new IInterval[10]);
+        Assert.assertEquals(10, result.length);
+        for (int i = 0; i < 10; i++) {
+            Assert.assertNull(result[i]);
+        }
+
+        // add a value in the tree and check that it is in the array
+        final DoubleInterval addedInterval = new DoubleInterval(4.0, 100.0);
+        tree.insert(addedInterval);
+
+        result = tree.toArray(new IInterval[10]);
+        Assert.assertEquals(addedInterval, result[0]);
+        for (int i = 1; i < 10; i++) {
+            Assert.assertNull(result[i]);
         }
     }
 }
