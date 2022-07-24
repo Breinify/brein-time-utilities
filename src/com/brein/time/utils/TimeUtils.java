@@ -96,7 +96,6 @@ public class TimeUtils {
          */
         final Calendar nowCalendar = createCal(unixTimestamp);
         final Calendar firstOfMonthCal = createCal();
-        //noinspection MagicConstant
         firstOfMonthCal.set(nowCalendar.get(Calendar.YEAR), nowCalendar.get(Calendar.MONTH), 1, 0, 0, 0);
 
         return firstOfMonthCal;
@@ -359,16 +358,16 @@ public class TimeUtils {
             final double converted;
             final String type;
             if (seconds >= 2 * 365 * 24 * 60 * 60) {
-                converted = seconds / 365 / 24 / 60 / 60.0;
+                converted = seconds / 365.0 / 24.0 / 60.0 / 60.0;
                 type = "years";
             } else if (seconds >= 2 * 7 * 24 * 60 * 60) {
-                converted = seconds / 7 / 24 / 60 / 60.0;
+                converted = seconds / 7.0 / 24.0 / 60.0 / 60.0;
                 type = "weeks";
             } else if (seconds >= 2 * 24 * 60 * 60) {
-                converted = seconds / 24 / 60 / 60.0;
+                converted = seconds / 24.0 / 60.0 / 60.0;
                 type = "days";
             } else if (seconds >= 2 * 60 * 60) {
-                converted = seconds / 60 / 60.0;
+                converted = seconds / 60.0 / 60.0;
                 type = "hours";
             } else if (seconds >= 2 * 60) {
                 converted = seconds / 60.0;
