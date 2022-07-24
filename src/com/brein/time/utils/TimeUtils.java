@@ -27,6 +27,7 @@ public class TimeUtils {
     public static final ZoneId UTC = ZoneId.of("UTC");
     protected static final Map<String, ZoneId> ZONES = new HashMap<>();
     private static final Logger LOGGER = Logger.getLogger(TimeUtils.class);
+    private static final String DEFAULT_FORMAT = "yyyy-MM-dd HH:mm:ss z";
 
     // fill the zones
     static {
@@ -43,7 +44,11 @@ public class TimeUtils {
     }
 
     public static String format(final long unixTimeStamp) {
-        return formatUnixTimeStamp("yyyy-MM-dd HH:mm:ss z", unixTimeStamp);
+        return formatUnixTimeStamp(DEFAULT_FORMAT, unixTimeStamp);
+    }
+
+    public static String format(final long unixTimeStamp, final ZoneId zone) {
+        return format(DEFAULT_FORMAT, unixTimeStamp, zone);
     }
 
     public static String format(final String format, final long unixTimeStamp, final String zone) {
@@ -58,7 +63,7 @@ public class TimeUtils {
     }
 
     public static String formatUnixTimeStamp(final long unixTimeStamp) {
-        return formatUnixTimeStamp("yyyy/MM/dd HH:mm:ss", unixTimeStamp);
+        return formatUnixTimeStamp(DEFAULT_FORMAT, unixTimeStamp);
     }
 
     public static String formatUnixTimeStamp(final String format, final long unixTimeStamp) {
