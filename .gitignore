@@ -23,6 +23,7 @@ src/config/dev-*.properties
 # Password Files     #
 ######################
 */test/config/*-password.properties
+*/test/config/local-*.properties
 
 # OS generated files #
 ######################
