@@ -219,4 +219,119 @@ public class TestTimeUtils {
     public void testConvertDateFormat() {
         Assert.assertEquals("10/15/2020", TimeUtils.convertDateFormat("2020-10-15", "yyyy-MM-dd", "MM/dd/yyyy"));
     }
+
+    // Helper to get epoch milliseconds for UTC dates
+    private long getUnixTimestamp(int year, int month, int day) {
+        return ZonedDateTime.of(year, month, day, 12, 0, 0, 0, TimeUtils.UTC)
+                .toInstant()
+                .getEpochSecond();
+    }
+
+    @Test
+    public void testFirstNDays() {
+        // First 7 days of March 2024
+        Assert.assertTrue(TimeUtils.isDayOfMonth(DaySelectorType.FIRST_N_DAYS, Collections.singletonList(7),
+                getUnixTimestamp(2024, 3, 1), "UTC"));
+        Assert.assertTrue(TimeUtils.isDayOfMonth(DaySelectorType.FIRST_N_DAYS, Collections.singletonList(7),
+                getUnixTimestamp(2024, 3, 7), "UTC"));
+        Assert.assertFalse(TimeUtils.isDayOfMonth(DaySelectorType.FIRST_N_DAYS, Collections.singletonList(7),
+                getUnixTimestamp(2024, 3, 8), "UTC"));
+    }
+
+    @Test
+    public void testLastNDays() {
+        // Last 5 days of April 2024 (30-day month)
+        Assert.assertTrue(TimeUtils.isDayOfMonth(DaySelectorType.LAST_N_DAYS, Collections.singletonList(5),
+                getUnixTimestamp(2024, 4, 26), "UTC"));
+        Assert.assertTrue(TimeUtils.isDayOfMonth(DaySelectorType.LAST_N_DAYS, Collections.singletonList(5),
+                getUnixTimestamp(2024, 4, 30), "UTC"));
+        Assert.assertFalse(TimeUtils.isDayOfMonth(DaySelectorType.LAST_N_DAYS, Collections.singletonList(5),
+                getUnixTimestamp(2024, 4, 25), "UTC"));
+
+        // Last 7 days of March 2024 (31-day month)
+        Assert.assertTrue(TimeUtils.isDayOfMonth(DaySelectorType.LAST_N_DAYS, Collections.singletonList(7),
+                getUnixTimestamp(2024, 3, 25), "UTC"));
+        Assert.assertTrue(TimeUtils.isDayOfMonth(DaySelectorType.LAST_N_DAYS, Collections.singletonList(7),
+                getUnixTimestamp(2024, 3, 31), "UTC"));
+        Assert.assertFalse(TimeUtils.isDayOfMonth(DaySelectorType.LAST_N_DAYS, Collections.singletonList(7),
+                getUnixTimestamp(2024, 3, 24), "UTC"));
+    }
+
+    @Test
+    public void testSpecificDays() {
+        // Specific days: 1,3,15,27
+        Assert.assertTrue(TimeUtils.isDayOfMonth(DaySelectorType.SPECIFIC_DAYS, Arrays.asList(1, 3, 15, 27),
+                getUnixTimestamp(2024, 3, 1), "UTC"));
+        Assert.assertTrue(TimeUtils.isDayOfMonth(DaySelectorType.SPECIFIC_DAYS, Arrays.asList(1, 3, 15, 27),
+                getUnixTimestamp(2024, 3, 15), "UTC"));
+        Assert.assertFalse(TimeUtils.isDayOfMonth(DaySelectorType.SPECIFIC_DAYS, Arrays.asList(1, 3, 15, 27),
+                getUnixTimestamp(2024, 3, 2), "UTC"));
+        Assert.assertFalse(TimeUtils.isDayOfMonth(DaySelectorType.SPECIFIC_DAYS, Arrays.asList(1, 3, 15, 27),
+                getUnixTimestamp(2024, 3, 31), "UTC"));
+    }
+
+    @Test
+    public void testRangeDays() {
+        // Range 10–15
+        Assert.assertTrue(TimeUtils.isDayOfMonth(DaySelectorType.RANGE, Arrays.asList(10, 15), getUnixTimestamp(2024,
+                3, 10), "UTC"));
+        Assert.assertTrue(TimeUtils.isDayOfMonth(DaySelectorType.RANGE, Arrays.asList(10, 15), getUnixTimestamp(2024,
+                3, 15), "UTC"));
+        Assert.assertFalse(TimeUtils.isDayOfMonth(DaySelectorType.RANGE, Arrays.asList(10, 15), getUnixTimestamp(2024
+                , 3, 9), "UTC"));
+        Assert.assertFalse(TimeUtils.isDayOfMonth(DaySelectorType.RANGE, Arrays.asList(10, 15), getUnixTimestamp(2024
+                , 3, 16), "UTC"));
+    }
+
+    @Test
+    public void testLeapYearFebruary() {
+        // Feb 2024 (leap year) last 2 days
+        Assert.assertTrue(TimeUtils.isDayOfMonth(DaySelectorType.LAST_N_DAYS, Collections.singletonList(2),
+                getUnixTimestamp(2024, 2, 28), "UTC"));
+        Assert.assertTrue(TimeUtils.isDayOfMonth(DaySelectorType.LAST_N_DAYS, Collections.singletonList(2),
+                getUnixTimestamp(2024, 2, 29), "UTC"));
+        Assert.assertFalse(TimeUtils.isDayOfMonth(DaySelectorType.LAST_N_DAYS, Collections.singletonList(2),
+                getUnixTimestamp(2024, 2, 27), "UTC"));
+
+        // Range 28–29
+        Assert.assertTrue(TimeUtils.isDayOfMonth(DaySelectorType.RANGE, Arrays.asList(28, 29), getUnixTimestamp(2024,
+                2, 28), "UTC"));
+        Assert.assertTrue(TimeUtils.isDayOfMonth(DaySelectorType.RANGE, Arrays.asList(28, 29), getUnixTimestamp(2024,
+                2, 29), "UTC"));
+        Assert.assertFalse(TimeUtils.isDayOfMonth(DaySelectorType.RANGE, Arrays.asList(28, 29), getUnixTimestamp(2024
+                , 2, 27), "UTC"));
+    }
+
+    @Test
+    public void testNonLeapFebruary() {
+        // Feb 2023 (non-leap) last 2 days
+        Assert.assertTrue(TimeUtils.isDayOfMonth(DaySelectorType.LAST_N_DAYS, Collections.singletonList(2),
+                getUnixTimestamp(2023, 2, 27), "UTC"));
+        Assert.assertTrue(TimeUtils.isDayOfMonth(DaySelectorType.LAST_N_DAYS, Collections.singletonList(2),
+                getUnixTimestamp(2023, 2, 28), "UTC"));
+        Assert.assertFalse(TimeUtils.isDayOfMonth(DaySelectorType.LAST_N_DAYS, Collections.singletonList(2),
+                getUnixTimestamp(2023, 2, 26), "UTC"));
+
+        // Range 27–28
+        Assert.assertTrue(TimeUtils.isDayOfMonth(DaySelectorType.RANGE, Arrays.asList(27, 28), getUnixTimestamp(2023,
+                2, 27), "UTC"));
+        Assert.assertTrue(TimeUtils.isDayOfMonth(DaySelectorType.RANGE, Arrays.asList(27, 28), getUnixTimestamp(2023,
+                2, 28), "UTC"));
+        Assert.assertFalse(TimeUtils.isDayOfMonth(DaySelectorType.RANGE, Arrays.asList(27, 28), getUnixTimestamp(2023
+                , 2, 26), "UTC"));
+    }
+
+    @Test
+    public void testMonthBoundaryEdges() {
+        // First and last day of May 2024
+        Assert.assertTrue(TimeUtils.isDayOfMonth(DaySelectorType.FIRST_N_DAYS, Collections.singletonList(1),
+                getUnixTimestamp(2024, 5, 1), "UTC"));
+        Assert.assertFalse(TimeUtils.isDayOfMonth(DaySelectorType.FIRST_N_DAYS, Collections.singletonList(1),
+                getUnixTimestamp(2024, 5, 2), "UTC"));
+
+        Assert.assertTrue(TimeUtils.isDayOfMonth(DaySelectorType.LAST_N_DAYS, Collections.singletonList(1),
+                getUnixTimestamp(2024, 5, 31), "UTC"));
+        Assert.assertFalse(TimeUtils.isDayOfMonth(DaySelectorType.LAST_N_DAYS, Collections.singletonList(1),
+                getUnixTimestamp(2024, 5, 30), "UTC"));
+    }
 }

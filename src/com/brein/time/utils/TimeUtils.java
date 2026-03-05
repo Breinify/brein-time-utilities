@@ -504,4 +504,85 @@ public class TimeUtils {
     protected static ZoneId getZone(final String timezone) {
         return timezone == null ? UTC : ZoneId.of(timezone);
     }
+
+    /**
+     * Checks if a timestamp falls into a day-of-month selection.
+     *
+     * @param selectorType Type of selection (first N, last N, specific days, range)
+     * @param days         For FIRST_N_DAYS / LAST_N_DAYS: single-element list with N
+     *                     For SPECIFIC_DAYS: list of days (1-based)
+     *                     For RANGE: list of exactly 2 elements [startDay, endDay] inclusive
+     * @param timestamp    Epoch seconds
+     * @param timezoneId   Timezone string, e.g. "UTC"
+     *
+     * @return true if the timestamp matches the selection
+     */
+    public static boolean isDayOfMonth(
+            final DaySelectorType selectorType,
+            final List<Integer> days,
+            final long timestamp,
+            final String timezoneId
+    ) {
+        if (days == null || days.isEmpty()) {
+            throw new IllegalArgumentException("Days list cannot be null or empty");
+        }
+
+        final ZoneId zone = zoneId(timezoneId);
+        final ZonedDateTime dateTime = Instant.ofEpochSecond(timestamp).atZone(zone);
+        final int dayOfMonth = dateTime.getDayOfMonth();
+        final int monthLength = dateTime.toLocalDate().lengthOfMonth();
+
+        switch (selectorType) {
+
+            case FIRST_N_DAYS: {
+                if (days.size() != 1) {
+                    throw new IllegalArgumentException("FIRST_N_DAYS requires exactly 1 value for N");
+                }
+                final int nFirst = days.get(0);
+                if (nFirst <= 0) {
+                    throw new IllegalArgumentException("N for FIRST_N_DAYS must be > 0");
+                }
+                return dayOfMonth >= 1 && dayOfMonth <= Math.min(nFirst, monthLength);
+            }
+
+            case LAST_N_DAYS: {
+                if (days.size() != 1) {
+                    throw new IllegalArgumentException("LAST_N_DAYS requires exactly 1 value for N");
+                }
+                final int nLast = days.get(0);
+                if (nLast <= 0) {
+                    throw new IllegalArgumentException("N for LAST_N_DAYS must be > 0");
+                }
+                final int start = Math.max(1, monthLength - nLast + 1);
+                return dayOfMonth >= start && dayOfMonth <= monthLength;
+            }
+
+            case SPECIFIC_DAYS: {
+                for (final int d : days) {
+                    if (d >= 1 && d <= monthLength && d == dayOfMonth) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            case RANGE: {
+                if (days.size() != 2) {
+                    throw new IllegalArgumentException("RANGE requires exactly 2 values: startDay and endDay");
+                }
+                final int start = days.get(0);
+                final int end = days.get(1);
+                if (start < 1 || end < 1 || start > monthLength || end > monthLength) {
+                    throw new IllegalArgumentException("Range days must be within 1..monthLength");
+                }
+                if (start > end) {
+                    throw new IllegalArgumentException("Range startDay cannot be greater than endDay");
+                }
+                return dayOfMonth >= start && dayOfMonth <= end;
+            }
+
+            default:
+                throw new IllegalArgumentException("Unknown selectorType: " + selectorType);
+        }
+    }
 }
