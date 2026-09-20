@@ -27,5 +27,12 @@ src/config/dev-*.properties
 
 # OS generated files #
 ######################
-.DS_Store
 .DS_Store?
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
