@@ -309,8 +309,8 @@ ij_html_space_inside_empty_tag = false
 ij_html_text_wrap = normal
 
 [{*.java,*.java8}]
-# Java baseline for brein-workspace/FORMATTING_RULES.md; see EDITORCONFIG_COVERAGE.md there for gaps.
-# Eight spaces match expressions and chains; fully stacked parameters still need four-space corrections.
+# Shared IntelliJ Java profile; FORMATTING_RULES.md in brein-workspace documents this layout.
+# Recalculate wrapping with eight-space continuations; do not apply manual wrapping overrides.
 trim_trailing_whitespace = true
 ij_java_continuation_indent_size = 8
 ij_formatter_tags_enabled = false
@@ -342,7 +342,7 @@ ij_java_array_initializer_right_brace_on_new_line = true
 ij_java_array_initializer_wrap = on_every_item
 ij_java_assert_statement_colon_on_next_line = false
 ij_java_assert_statement_wrap = normal
-ij_java_assignment_wrap = normal
+ij_java_assignment_wrap = off
 ij_java_binary_operation_sign_on_next_line = false
 ij_java_binary_operation_wrap = normal
 ij_java_blank_lines_after_anonymous_class_header = 0
@@ -362,8 +362,8 @@ ij_java_blank_lines_before_package = 0
 ij_java_block_brace_style = end_of_line
 ij_java_block_comment_add_space = false
 ij_java_block_comment_at_first_column = false
-# Exact method names, not receiver types or wildcard setter names; see coverage notes.
-ij_java_builder_methods = set,asMap,filter,map,mapToInt,mapToLong,mapToDouble,flatMap,flatMapToInt,flatMapToLong,flatMapToDouble,distinct,sorted,peek,limit,skip,collect,reduce,forEach,forEachOrdered,count,min,max,anyMatch,allMatch,noneMatch,findFirst,findAny,toArray,sequential,parallel,unordered,onClose,boxed,asLongStream,asDoubleStream
+# Use normal chain wrapping without forced wrapping by method name.
+ij_java_builder_methods =
 ij_java_call_parameters_new_line_after_left_paren = false
 ij_java_call_parameters_right_paren_on_new_line = false
 ij_java_call_parameters_wrap = normal
