@@ -313,7 +313,7 @@ ij_html_text_wrap = normal
 # Recalculate wrapping with eight-space continuations; do not apply manual wrapping overrides.
 trim_trailing_whitespace = true
 ij_java_continuation_indent_size = 8
-ij_formatter_tags_enabled = false
+ij_formatter_tags_enabled = true
 ij_java_align_consecutive_assignments = false
 ij_java_align_consecutive_variable_declarations = false
 ij_java_align_group_field_declarations = false
